@@ -34,7 +34,7 @@ src/
 ├── interceptors.ts         # Перехватчики запросов
 │
 ├── app                     # Ядро приложения                    
-│   └── App.tsx             # Конфигурация маршрутов
+│   └── App.jsx             # Конфигурация маршрутов
 │       ├── providers 
 │       ├── routes 
 │       └── store 
@@ -96,3 +96,23 @@ src/
 │
 └── index.tsx               # Точка входа               
 ```
+
+## Именование файлов и папок
+
+**Папки** — всегда kebab-case.
+
+**Файлы** — по типу содержимого.
+
+| Тип файла                  | Стиль                          | Пример                                   |
+|----------------------------|--------------------------------|------------------------------------------|
+| React-компоненты (JSX/TSX) | PascalCase                     | UserProfile.jsx, AuthButton.tsx          |
+| Хуки (use*)                | camelCase                      | useAuth.js, useWindowSize.ts             |
+| Утилиты / сервисы          | kebab-case                     | api-client.js, date-formatter.ts         |
+| Стили (CSS/SCSS модули)    | kebab-case                     | user-profile.module.css                  |
+| Типы / интерфейсы          | kebab-case                     | user-types.ts, api-types.ts              |
+| Конфиги                    | kebab-case                     | app.config.js, build-config.js           |
+| Тесты                      | совпадает с тестируемым файлом | UserProfile.test.jsx, api-client.test.js |
+
+
+
+ 

@@ -1,0 +1,39 @@
+.orderWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    composes: text text_type_main-medium from global;
+    padding: 120px 0;
+}
+
+.orderIdWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+}
+
+.orderNumber {
+    composes: text text_type_digits-large from global;
+}
+
+.addonTextWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.addonTitle {
+    composes: text text_type_main-default from global;
+}
+
+.addonSubtitle {
+    composes: text text_type_main-default text_color_inactive from global;
+}
+
+.imgWrapper {
+    width: 120px;
+    height: 120px;
+    margin: 60px 0;
+}
