@@ -21,7 +21,7 @@
     display: flex;
 }
 
-.proteinsWrapper {
+.priceWrapper {
     display: flex;
     gap: 4px;
     composes: text text_type_digits-default from global;

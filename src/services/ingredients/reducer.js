@@ -14,6 +14,7 @@ export function ingredientsReducer(state = initialState, action) {
         isLoading: true,
         error: null,
       };
+
     case FETCH_INGREDIENTS_SUCCESS:
       return {
         ...state,
@@ -21,13 +22,15 @@ export function ingredientsReducer(state = initialState, action) {
         items: action.payload,
         error: null,
       };
+
     case FETCH_INGREDIENTS_ERROR:
       return {
         ...state,
         isLoading: false,
         error: action.payload,
       };
+
     default:
-      return state;
+      return { ...state };
   }
 }

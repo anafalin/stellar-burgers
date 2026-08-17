@@ -1,7 +1,7 @@
 import IngredientCard from '../ingredient-card/IngredientCard';
 import style from './style.module.css';
 
-const IngredientCardList = ({ title, items, onClick }) => {
+const IngredientCardList = ({ title, items }) => {
   return (
     <>
       <h3 className={style.title}>{title}</h3>
@@ -9,10 +9,7 @@ const IngredientCardList = ({ title, items, onClick }) => {
         {items.map((item) => (
           <IngredientCard
             key={item._id}
-            title={item.name}
-            proteins={item.proteins}
-            image={item.image}
-            onClick={() => onClick(item)}
+            item={item}
           />
         ))}
       </div>

@@ -6,7 +6,7 @@ import style from './style.module.css';
 
 const modal = document.getElementById('modal');
 
-const Modal = (title, children, onClose) => {
+const Modal = ({ title = null, children, onClose }) => {
   useEffect(() => {
     const handleEscDown = (event) => {
       if (event.key === 'Escape') {
@@ -23,9 +23,9 @@ const Modal = (title, children, onClose) => {
   return createPortal(
     <>
       <ModalOverlay />
-      <div className={`${style.modalContainer} ${!title ? style.modalWithoutTitle : ''}`}>
-        <div className={`${style.head} ${!title ? style.headWithoutTitle : ''}`}>
-          {title ? <h2 className={style.title}>{title}</h2> : +(<div className={style.spacer} />)}
+      <div className={style.modalContainer}>
+        <div className={`${style.head} ${title !== null ? style.headWithoutTitle : ''}`}>
+          {title !== null ? <h2 className={style.title}>{title}</h2> : <div className={style.spacer} />}
 
           <button className={style.btnWrapper} onClick={onClose} onKeyDown={onClose} type="button">
             <CloseIcon type="primary" />

@@ -1,4 +1,4 @@
-import { ADD_BUN, ADD_INGREDIENT, DELETE_INGREDIENT } from './actions';
+import { ADD_BUN, ADD_INGREDIENT, DELETE_INGREDIENT, MOVE_INGREDIENT, RESET_CONSTRUCTOR_ITEMS } from './actions';
 
 const initialState = {
   bun: null,
@@ -10,19 +10,42 @@ export function constructorReducer(state = initialState, action) {
     case ADD_BUN:
       return {
         ...state,
-        bun: action.bun,
+        bun: action.payload,
       };
+
     case ADD_INGREDIENT:
       return {
         ...state,
-        ingredients: [...state.ingredients, action.ingredients],
+        ingredients: [...state.ingredients, { ...action.payload, index: state.ingredients.length }],
       };
-    case DELETE_INGREDIENT:
+
+    case MOVE_INGREDIENT: {
+      const ingredients = [...state.ingredients];
+      ingredients.splice(action.payload.toIndex, 0, ingredients.splice(action.payload.fromIndex, 1)[0]);
       return {
         ...state,
-        ingredients: state.ingredients.filter((ingredient) => ingredient.id !== action.ingredient.id),
+        ingredients: ingredients,
       };
+    }
+
+    case DELETE_INGREDIENT: {
+      const ingredients = [...state.ingredients];
+      ingredients.splice(action.payload.index, 1);
+      return {
+        ...state,
+        ingredients: ingredients,
+      };
+    }
+
+    case RESET_CONSTRUCTOR_ITEMS: {
+      return {
+        ...initialState,
+      };
+    }
+
     default:
-      return state;
+      return {
+        ...state,
+      };
   }
 }

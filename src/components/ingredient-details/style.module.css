@@ -3,6 +3,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 40px 0 0 0;
 }
 
 .imgWrapper {
@@ -18,7 +19,7 @@
     text-align: center;
 }
 
-.haracteristics {
+.specs {
     composes: text ext text_type_main-default text_color_inactive from global;
     display: flex;
     gap: 20px;

@@ -16,6 +16,12 @@
     justify-content: center;
     align-items: center;
 }
+
+.emptyElementHover {
+    border: 2px dotted #b2b2b2;
+    background: black;
+}
+
 .item {
     display: flex;
     justify-content: end;
