@@ -1,6 +1,29 @@
-.constructorList {
+.list {
     display: flex;
     flex-direction: column;
     gap: 16px;
+    align-items: end;
     overflow-y: scroll;
+}
+
+.emptyElement {
+    border-radius: 60px;
+    background: #2f2f37;
+    max-width: 536px;
+    width: 100%;
+    min-height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.item {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    width: 100%;
+}
+
+.ingredientList {
+    composes: list;
+    width: 100%;
 }

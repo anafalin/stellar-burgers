@@ -1,5 +1,5 @@
 .title {
-    margin-top: 40px;
+    margin-top: 32px;
     composes: text text_type_main-medium from global;
 }
 
@@ -7,6 +7,6 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    padding: 24px 16px 40px 16px;
+    padding: 24px 16px 24px 16px;
     gap: 32px 24px;
 }
