@@ -1,0 +1,41 @@
+.wrapperCard {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    width: 272px;
+    align-items: center;
+    gap: 4px;
+    position: relative;
+    cursor: pointer;
+}
+
+.wrapperCard h4 {
+    text-align: center;
+    align-items: center;
+    vertical-align: middle;
+}
+
+.imgWrapper {
+    width: 240px;
+    height: 120px;
+    display: flex;
+}
+
+.priceWrapper {
+    display: flex;
+    gap: 4px;
+    composes: text text_type_digits-default from global;
+}
+
+.count {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-color: #4c4cff;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+}
