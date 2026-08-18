@@ -5,11 +5,16 @@ import { bun, ingredients } from '../../services/constructor/selectors';
 import ConstructorEmptyItemList from './ConstructorEmptyItemList';
 import { useDrop } from 'react-dnd';
 import { ADD_BUN, ADD_INGREDIENT } from '../../services/constructor/actions';
+import { useRef } from 'react';
 
 const ConstructorItemList = () => {
   const dispatch = useDispatch();
   const bunItem = useSelector(bun);
   const ingredientItems = useSelector(ingredients);
+
+  const topBunRef = useRef(null);
+  const ingredientListRef = useRef(null);
+  const bottomBunRef = useRef(null);
 
   const [{ isOverTopBun }, dropTopBunRef] = useDrop({
     accept: 'bun',
@@ -24,7 +29,7 @@ const ConstructorItemList = () => {
   const [{ isOverIngredient }, dropIngredientRef] = useDrop({
     accept: 'ingredient',
     drop: (item) => {
-      dispatch({ type: ADD_INGREDIENT, payload: item });
+      dispatch({ type: ADD_INGREDIENT, payload: {...item, uniqueId: crypto.randomUUID()} });
     },
     collect: (monitor) => ({
       isOverIngredient: monitor.isOver(),
@@ -41,9 +46,13 @@ const ConstructorItemList = () => {
     }),
   });
 
+  dropTopBunRef(topBunRef);
+  dropBottomBunRef(bottomBunRef);
+  dropIngredientRef(ingredientListRef);
+
   return (
     <div className={style.list}>
-      <div className={style.item} ref={dropTopBunRef}>
+      <div className={style.item} ref={topBunRef}>
         {bunItem == null ? (
           <ConstructorEmptyItemList placeholder={'Добавьте булку'} isOver={isOverTopBun || isOverBottomBun} />
         ) : (
@@ -51,15 +60,15 @@ const ConstructorItemList = () => {
         )}
       </div>
 
-      <div className={style.ingredientList} ref={dropIngredientRef}>
+      <div className={style.ingredientList} ref={ingredientListRef}>
         {ingredientItems.length === 0 ? (
           <ConstructorEmptyItemList placeholder={'Добавьте ингредиент'} isOver={isOverIngredient} />
         ) : (
-          ingredientItems.map((item, index) => <ConstructorItem key={index} index={index} item={item} />)
+          ingredientItems.map((item, index) => <ConstructorItem key={item.uniqueId} index={index} item={item} />)
         )}
       </div>
 
-      <div className={style.item} ref={dropBottomBunRef}>
+      <div className={style.item} ref={bottomBunRef}>
         {bunItem == null ? (
           <ConstructorEmptyItemList placeholder={'Добавьте булку'} isOver={isOverTopBun || isOverBottomBun} />
         ) : (

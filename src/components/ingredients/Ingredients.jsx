@@ -1,8 +1,11 @@
 import IngredientCardList from '../ingredient-card-list/IngredientCardList';
-import IngredientDetails from '../ingredient-details/IngredientDetails';
 import style from './style.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { bunIngredients, mainIngredients, sauceIngredients } from '../../services/ingredients/selectors';
+import {
+  bunIngredients,
+  mainIngredients,
+  sauceIngredients,
+} from '../../services/ingredients/selectors';
 import { useEffect, useRef, useState } from 'react';
 import { fetchIngredients } from '../../services/ingredients/actions';
 
@@ -16,9 +19,9 @@ const Ingredients = () => {
   const [currentTab, setCurrentTab] = useState('bun');
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(fetchIngredients());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(fetchIngredients());
+  // }, []);
 
   const parentRef = useRef(null); // Ссылка на контейнер табов (ul)
   const childRef = useRef(null); // Ссылка на скролл-контейнер (menuContent)
@@ -30,7 +33,6 @@ const Ingredients = () => {
 
   const isLoading = useSelector((store) => store.ingredients.isLoading);
   const error = useSelector((store) => store.ingredients.error);
-  const previewIngredient = useSelector((store) => store.previewIngredient.item);
 
   const buns = useSelector(bunIngredients);
   const mains = useSelector(mainIngredients);
@@ -45,7 +47,9 @@ const Ingredients = () => {
       const containerTop = scrollContainer.getBoundingClientRect().top;
 
       // Вычисляем расстояние от верха контейнера до каждого заголовка
-      const bunsTop = bunsRef.current ? Math.abs(bunsRef.current.getBoundingClientRect().top - containerTop) : Infinity;
+      const bunsTop = bunsRef.current
+        ? Math.abs(bunsRef.current.getBoundingClientRect().top - containerTop)
+        : Infinity;
       const saucesTop = saucesRef.current
         ? Math.abs(saucesRef.current.getBoundingClientRect().top - containerTop)
         : Infinity;
@@ -145,7 +149,6 @@ const Ingredients = () => {
             <IngredientCardList title={groups.main} items={mains} />
           </div>
         )}
-        {previewIngredient && <IngredientDetails />}
       </div>
     </div>
   );

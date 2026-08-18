@@ -16,7 +16,7 @@ export function constructorReducer(state = initialState, action) {
     case ADD_INGREDIENT:
       return {
         ...state,
-        ingredients: [...state.ingredients, { ...action.payload, index: state.ingredients.length }],
+        ingredients: [...state.ingredients, { ...action.payload }],
       };
 
     case MOVE_INGREDIENT: {
@@ -30,7 +30,7 @@ export function constructorReducer(state = initialState, action) {
 
     case DELETE_INGREDIENT: {
       const ingredients = [...state.ingredients];
-      ingredients.splice(action.payload.index, 1);
+      ingredients.filter(item => item.uniqueId !== action.payload)
       return {
         ...state,
         ingredients: ingredients,
@@ -44,8 +44,6 @@ export function constructorReducer(state = initialState, action) {
     }
 
     default:
-      return {
-        ...state,
-      };
+      return state;
   }
 }

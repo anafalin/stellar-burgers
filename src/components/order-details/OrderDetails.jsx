@@ -1,28 +1,14 @@
 import done from '../../images/done.svg';
 import style from './style.module.css';
-import { useDispatch, useSelector } from 'react-redux';
-import { orderIndex} from '../../services/order/selectors';
-import Modal from '../modal/Modal';
-import { RESET_CONSTRUCTOR_ITEMS } from '../../services/constructor/actions';
-import { RESET_ORDER } from '../../services/order/actions';
+import { useSelector } from 'react-redux';
+import { orderIndex } from '../../services/order/selectors';
 
 const OrderDetails = () => {
-  const dispatch = useDispatch();
   const orderId = useSelector(orderIndex);
-
-  const closeModalHandler = () => {
-    dispatch({
-      type: RESET_CONSTRUCTOR_ITEMS,
-    });
-    dispatch({
-      type: RESET_ORDER,
-    });
-  };
 
   if (!orderId) return null;
 
   return (
-    <Modal onClose={closeModalHandler}>
       <div className={style.orderWrapper}>
         <div className={style.orderIdWrapper}>
           <p className={style.orderNumber}>{orderId}</p>
@@ -38,7 +24,6 @@ const OrderDetails = () => {
           <p className={style.addonSubtitle}>Дождитесь готовности на орбитальной станции</p>
         </div>
       </div>
-    </Modal>
   );
 };
 
