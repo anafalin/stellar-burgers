@@ -19,8 +19,8 @@ nav {
 
 .leftNav {
     display: flex;
-    gap: 8px;
     flex: 1;
+    gap: 20px;
 }
 
 .wrapperLogo {
@@ -40,10 +40,23 @@ nav {
     align-items: center;
     gap: 8px;
     padding: 20px 20px 20px 0;
+    composes: text text_color_inactive from global;
 }
 
-.inactive {
-    composes: text text_color_inactive from global;
+.wrapperLink:hover {
+    color: #F2F2F3FF;
+}
+
+.wrapperLink:hover svg {
+    fill: #F2F2F3FF !important;
+}
+
+.activeWrapperLink {
+    composes: text text_color_default from global;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 20px 20px 20px 0;
 }
 
 p {

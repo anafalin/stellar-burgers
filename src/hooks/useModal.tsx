@@ -7,7 +7,7 @@ interface UseModalReturn<T> {
   closeModal: () => void;
 }
 
-export function useModal<T>(): UseModalReturn<T> {
+function useModal<T>(): UseModalReturn<T> {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<T | null>(null);
 

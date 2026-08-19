@@ -1,4 +1,4 @@
-import { createOrderRequest } from '../../api/orderApi';
+import { createOrderRequest } from '../../api/api';
 
 export const CREATE_ORDER = 'CREATE_ORDER';
 export const REQUEST_CREATE_ORDER_PENDING = 'REQUEST_CREATE_ORDER_PENDING';

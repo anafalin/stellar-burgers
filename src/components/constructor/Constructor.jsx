@@ -4,11 +4,17 @@ import style from './style.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { bun, ingredients } from '../../services/constructor/selectors';
 import { useMemo } from 'react';
-import { CREATE_ORDER, createOrder } from '../../services/order/actions';
+import { CREATE_ORDER, createOrder, RESET_ORDER } from '../../services/order/actions';
 import { orderIndex } from '../../services/order/selectors';
 import OrderDetails from '../order-details/OrderDetails';
+import Modal from '../modal/Modal';
+import { RESET_CONSTRUCTOR_ITEMS } from '../../services/constructor/actions';
+import { useAuth } from '../../utils/auth';
+import { useNavigate } from 'react-router-dom';
 
 const Constructor = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
   const dispatch = useDispatch();
   const bunItem = useSelector(bun);
   const ingredientItems = useSelector(ingredients);
@@ -16,6 +22,11 @@ const Constructor = () => {
 
   const clickCreateOrderHandler = () => {
     if (!bunItem || ingredientItems.length === 0) {
+      return;
+    }
+
+    if(!user) {
+      navigate('/login')
       return;
     }
 
@@ -29,6 +40,15 @@ const Constructor = () => {
     });
 
     dispatch(createOrder(list));
+  };
+
+  const closeModalHandler = () => {
+    dispatch({
+      type: RESET_CONSTRUCTOR_ITEMS,
+    });
+    dispatch({
+      type: RESET_ORDER,
+    });
   };
 
   // Мемоизация вычисления суммы конструктора
@@ -55,9 +75,13 @@ const Constructor = () => {
         <Button htmlType="button" type="primary" size="medium" onClick={clickCreateOrderHandler}>
           Оформить заказ
         </Button>
-
-        <>{orderId && <OrderDetails />}</>
       </div>
+
+      {orderId && (
+        <Modal onClose={closeModalHandler}>
+          <OrderDetails />
+        </Modal>
+      )}
     </div>
   );
 };

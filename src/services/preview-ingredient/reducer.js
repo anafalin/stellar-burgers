@@ -1,4 +1,4 @@
-import { RESET_PREVIEW_INGREDIENT, SELECT_PREVIEW_INGREDIENT } from './actions';
+import { RESET_PREVIEW_INGREDIENT, SET_PREVIEW_INGREDIENT } from './actions';
 
 const initialState = {
   item: null,
@@ -6,7 +6,7 @@ const initialState = {
 
 export function previewIngredientReducer(state = initialState, action) {
   switch (action.type) {
-    case SELECT_PREVIEW_INGREDIENT:
+    case SET_PREVIEW_INGREDIENT:
       return {
         ...state,
         item: action.payload,

@@ -19,7 +19,7 @@ const ConstructorItem = ({ index, type, isLocked, item }) => {
   // Настройка Drag
   const [{ isDragging }, dragRef] = useDrag({
     type: 'sort_ingredient',
-    item: () => ({ index }),
+    item: () => ({ id: item.id, index }),
     canDrag: !isLocked,
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
@@ -35,38 +35,29 @@ const ConstructorItem = ({ index, type, isLocked, item }) => {
       const dragIndex = draggedItem.index;
       const hoverIndex = index;
 
-      // Если перетаскиваем над самим собой — ничего не делаем
       if (dragIndex === hoverIndex) return;
 
-      // Вычисляем границы элемента на экране
       const hoverBoundingRect = ref.current.getBoundingClientRect();
-      // Находим вертикальную середину элемента
       const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-
-      // Получаем координаты мыши
       const clientOffset = monitor.getClientOffset();
       if (!clientOffset) return;
 
-      // Получаем расстояние от верха элемента до курсора мыши
       const hoverActualY = clientOffset.y - hoverBoundingRect.top;
 
-      // Условия для оптимизации сортировки (чтобы не спамить экшенами)
       if (dragIndex < hoverIndex && hoverActualY < hoverMiddleY) return;
       if (dragIndex > hoverIndex && hoverActualY > hoverMiddleY) return;
 
-      // Вызываем экшен изменения позиции в редюсере
       dispatch({
         type: MOVE_INGREDIENT,
         payload: { fromIndex: dragIndex, toIndex: hoverIndex },
       });
 
-      // Мутируем индекс перетаскиваемого объекта для плавной анимации
+      // ✅ Мутируем индекс в drag item для предотвращения лишних вызовов hover
       draggedItem.index = hoverIndex;
     },
   });
 
-  dragRef(ref);
-  dropRef(ref);
+  dragRef(dropRef(ref));
 
   const opacity = isDragging ? 0 : 1;
 

@@ -7,10 +7,7 @@ const IngredientCardList = ({ title, items }) => {
       <h3 className={style.title}>{title}</h3>
       <div className={style.listWrapper}>
         {items.map((item) => (
-          <IngredientCard
-            key={item._id}
-            item={item}
-          />
+          <IngredientCard key={item._id} item={item} />
         ))}
       </div>
     </>
