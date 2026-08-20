@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -8,7 +8,6 @@ import Modal from '../modal/Modal';
 import style from './style.module.css';
 import { bun, ingredients } from '../../services/constructor/selectors';
 import { CREATE_ORDER, createOrder, RESET_ORDER } from '../../services/order/actions';
-import { orderIndex } from '../../services/order/selectors';
 import { RESET_CONSTRUCTOR_ITEMS } from '../../services/constructor/actions';
 import { useAuth } from '../../utils/auth';
 import { IIngredient, IStore } from '../../utils/types';
@@ -16,13 +15,12 @@ import { IIngredient, IStore } from '../../utils/types';
 const Constructor: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<any>();
-
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const { user } = useAuth();
 
   // Селекторы вытаскивают типизированные данные
   const bunItem = useSelector((state: IStore) => bun(state)) as IIngredient | null;
   const ingredientItems = useSelector((state: IStore) => ingredients(state)) as IIngredient[];
-  const orderId = useSelector((state: IStore) => orderIndex(state)) as string | null;
 
   const clickCreateOrderHandler = (): void => {
     if (!bunItem || ingredientItems.length === 0) {
@@ -45,6 +43,7 @@ const Constructor: React.FC = () => {
     });
 
     dispatch(createOrder(list));
+    setIsModalOpen(true);
   };
 
   const closeModalHandler = (): void => {
@@ -54,6 +53,7 @@ const Constructor: React.FC = () => {
     dispatch({
       type: RESET_ORDER,
     });
+    setIsModalOpen(false);
   };
 
   // Мемоизация вычисления суммы конструктора
@@ -82,7 +82,7 @@ const Constructor: React.FC = () => {
         </Button>
       </div>
 
-      {orderId && (
+      {isModalOpen && (
         <Modal onClose={closeModalHandler}>
           <OrderDetails />
         </Modal>

@@ -1,12 +1,25 @@
 import done from '../../images/done.svg';
 import style from './style.module.css';
 import { useSelector } from 'react-redux';
-import { orderIndex } from '../../services/order/selectors';
+import { orderIndex, orderLoading } from '../../services/order/selectors';
 
 const OrderDetails = () => {
   const orderId = useSelector(orderIndex);
+  const orderIsLoader = useSelector(orderLoading);
 
-  if (!orderId) return <></>;
+  if (orderIsLoader) {
+    return (
+      <div className={style.orderWrapper}>
+        <div className={style.spinnerWrapper}>
+          <div className={style.spinner}></div>
+          <p className={style.loadingText}>Заказ формируется...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // 2. Если загрузка завершилась, но ID почему-то нет (например, ошибка)
+  if (!orderId) return null;
 
   return (
       <div className={style.orderWrapper}>

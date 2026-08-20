@@ -9,6 +9,7 @@ export const RESET_ORDER = 'RESET_ORDER';
 export const createOrder = (ingredients: string[]) => {
   return async (dispatch: any) => {
     dispatch({ type: REQUEST_CREATE_ORDER_PENDING });
+
     try {
       const res = await createOrderRequest(ingredients);
       dispatch({
@@ -22,4 +23,8 @@ export const createOrder = (ingredients: string[]) => {
       });
     }
   };
+};
+
+export const sleep = (ms: number): Promise<void> => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 };
