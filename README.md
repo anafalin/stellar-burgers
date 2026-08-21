@@ -27,14 +27,14 @@ src/
 │── api                     # API-клиенты и запросы
 ├── client.ts               # Базовый HTTP-клиент
 ├── endpoints               # Эндпоинты по сущностям
-│   ├── auth.ts
+│   ├── auth.tsx
 │   ├── burgers.ts
 │   ├── orders.ts
 │   └── users.ts
 ├── interceptors.ts         # Перехватчики запросов
 │
 ├── app                     # Ядро приложения                    
-│   └── App.jsx             # Конфигурация маршрутов
+│   └── App.tsx             # Конфигурация маршрутов
 │       ├── providers 
 │       ├── routes 
 │       └── store 
