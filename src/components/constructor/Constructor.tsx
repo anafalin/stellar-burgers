@@ -6,21 +6,20 @@ import ConstructorItemList from '../constructor-item-list/ConstructorItemList';
 import OrderDetails from '../order-details/OrderDetails';
 import Modal from '../modal/Modal';
 import style from './style.module.css';
-import { bun, ingredients } from '../../services/constructor/selectors';
-import { CREATE_ORDER, createOrder, RESET_ORDER } from '../../services/order/actions';
-import { RESET_CONSTRUCTOR_ITEMS } from '../../services/constructor/actions';
+import { createOrder, resetOrder } from '../../services/order/actions';
+import { resetConstructorItems } from '../../services/constructor/actions';
 import { useAuth } from '../../utils/auth';
-import { IIngredient, IStore } from '../../utils/types';
+import { selectBun, selectIngredients } from '../../services/constructor/selectors';
+import { AppDispatch } from '../../services';
 
 const Constructor: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch<any>();
+  const dispatch = useDispatch<AppDispatch>();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const { user } = useAuth();
 
-  // Селекторы вытаскивают типизированные данные
-  const bunItem = useSelector((state: IStore) => bun(state)) as IIngredient | null;
-  const ingredientItems = useSelector((state: IStore) => ingredients(state)) as IIngredient[];
+  const bunItem = useSelector(selectBun);
+  const ingredientItems = useSelector(selectIngredients);
 
   const clickCreateOrderHandler = (): void => {
     if (!bunItem || ingredientItems.length === 0) {
@@ -32,34 +31,21 @@ const Constructor: React.FC = () => {
       return;
     }
 
-    // Собираем массив ID: булка (верх) + ингредиенты + булка (низ)
     const list: string[] = [bunItem._id, ...ingredientItems.map((item) => item._id), bunItem._id];
-
-    dispatch({
-      type: CREATE_ORDER,
-      payload: {
-        ingredients: [...list],
-      },
-    });
 
     dispatch(createOrder(list));
     setIsModalOpen(true);
   };
 
   const closeModalHandler = (): void => {
-    dispatch({
-      type: RESET_CONSTRUCTOR_ITEMS,
-    });
-    dispatch({
-      type: RESET_ORDER,
-    });
+    dispatch(resetConstructorItems());
+    dispatch(resetOrder());
     setIsModalOpen(false);
   };
 
-  // Мемоизация вычисления суммы конструктора
   const total = useMemo<number>(() => {
     let sum = 0;
-    if (bunItem !== null) {
+    if (bunItem) {
       sum = sum + bunItem.price * 2;
     }
     ingredientItems?.forEach((ingredient) => {

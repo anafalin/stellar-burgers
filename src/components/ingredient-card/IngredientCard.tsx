@@ -3,19 +3,20 @@ import style from './style.module.css';
 import { useDrag } from 'react-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { ingredientById } from '../../services/constructor/selectors';
-import { SET_PREVIEW_INGREDIENT } from '../../services/preview-ingredient/actions';
+import { selectCountIngredientById } from '../../services/constructor/selectors';
+import { setPreviewIngredient } from '../../services/preview-ingredient/actions';
 import { IIngredient } from '../../utils/types';
+import { AppDispatch } from '../../services';
 
 interface IngredientCardProps {
   item: IIngredient;
 }
 
 const IngredientCard = ({ item }: IngredientCardProps) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const location = useLocation();
-  const count = useSelector(ingredientById(item._id));
+  const count = useSelector(selectCountIngredientById(item._id));
 
   const [{ isDragging }, dragRef] = useDrag({
     type: item.type === 'bun' ? 'bun' : 'ingredient',
@@ -26,11 +27,7 @@ const IngredientCard = ({ item }: IngredientCardProps) => {
   });
 
   const handleOpenDetails = () => {
-    // Сохраняем ингредиент в store
-    dispatch({
-      type: SET_PREVIEW_INGREDIENT,
-      payload: item,
-    });
+    dispatch(setPreviewIngredient(item));
 
     // Переходим на страницу ингредиента с сохранением фона
     navigate(`/ingredients/${item._id}`, {

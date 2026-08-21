@@ -3,9 +3,9 @@ import { useSelector } from 'react-redux';
 import IngredientCardList from '../ingredient-card-list/IngredientCardList';
 import style from './style.module.css';
 import {
-  bunIngredients,
-  mainIngredients,
-  sauceIngredients,
+  selectBunIngredients,
+  selectMainIngredients,
+  selectSauceIngredients,
 } from '../../services/ingredients/selectors';
 import { IStore } from '../../utils/types';
 
@@ -34,9 +34,9 @@ const Ingredients: React.FC = () => {
   const error = useSelector((store: IStore) => store.ingredients.error);
 
   // Селекторы автоматически подхватят типы, если они типизированы внутри selectors.ts
-  const buns = useSelector(bunIngredients);
-  const mains = useSelector(mainIngredients);
-  const sauces = useSelector(sauceIngredients);
+  const buns = useSelector(selectBunIngredients);
+  const mains = useSelector(selectMainIngredients);
+  const sauces = useSelector(selectSauceIngredients);
 
   useEffect(() => {
     const scrollContainer = childRef.current;

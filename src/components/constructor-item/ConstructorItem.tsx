@@ -3,15 +3,15 @@ import { useDispatch } from 'react-redux';
 import { useDrag, useDrop, XYCoord } from 'react-dnd';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './style.module.css';
-import { DELETE_INGREDIENT, MOVE_INGREDIENT } from '../../services/constructor/actions';
+import { deleteIngredient, moveIngredient } from '../../services/constructor/actions';
 import { IIngredient } from '../../utils/types';
+import { AppDispatch } from '../../services';
 
-// Описываем интерфейс пропсов для компонента
 interface IConstructorItemProps {
   index: number | 0;
-  type?: 'top' | 'bottom'; // Уточняем типы для ConstructorElement (может быть undefined для начинок)
+  type?: 'top' | 'bottom';
   isLocked?: boolean | false;
-  item: IIngredient & { id?: string; index?: number }; // Учитываем UUID (id) и внутренний индекс dnd
+  item: IIngredient & { id?: string; index?: number };
 }
 
 // Описываем объект, который перетаскивается (Drag Item)
@@ -20,25 +20,14 @@ interface IDragItem {
   index: number;
 }
 
-// Заглушка для useDispatch (если у вас настроен AppDispatch, замените тип)
-type AppDispatch = any;
-
-const ConstructorItem: React.FC<IConstructorItemProps> = ({
-  index,
-  type,
-  isLocked,
-  item,
-}: IConstructorItemProps) => {
+const ConstructorItem: React.FC<IConstructorItemProps> = ({ index, type, isLocked, item }: IConstructorItemProps) => {
   const dispatch = useDispatch<AppDispatch>();
 
   // Указываем точный тип элемента HTMLDivElement для рефа
   const ref = useRef<HTMLDivElement>(null);
 
   const handleOnDrop = (): void => {
-    dispatch({
-      type: DELETE_INGREDIENT,
-      payload: item.index,
-    });
+    dispatch(deleteIngredient(item.uniqueId!!));
   };
 
   // Настройка Drag
@@ -66,7 +55,6 @@ const ConstructorItem: React.FC<IConstructorItemProps> = ({
       const hoverBoundingRect = ref.current.getBoundingClientRect();
       const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
 
-      // Типизируем координаты мыши как XYCoord из react-dnd
       const clientOffset = monitor.getClientOffset() as XYCoord | null;
       if (!clientOffset) return;
 
@@ -75,17 +63,12 @@ const ConstructorItem: React.FC<IConstructorItemProps> = ({
       if (dragIndex < hoverIndex && hoverActualY < hoverMiddleY) return;
       if (dragIndex > hoverIndex && hoverActualY > hoverMiddleY) return;
 
-      dispatch({
-        type: MOVE_INGREDIENT,
-        payload: { fromIndex: dragIndex, toIndex: hoverIndex },
-      });
+      dispatch(moveIngredient(dragIndex, hoverIndex));
 
-      // Мутируем индекс в drag item для предотвращения лишних вызовов hover
       draggedItem.index = hoverIndex;
     },
   });
 
-  // В TypeScript для react-dnd правильное связывание рефов выглядит так:
   dragRef(dropRef(ref));
 
   const opacity = isDragging ? 0 : 1;

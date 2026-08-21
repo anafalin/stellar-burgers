@@ -6,13 +6,23 @@ import { previewIngredientReducer } from './preview-ingredient/reducer';
 import { orderReducer } from './order/reducer';
 import { IStore } from '../utils/types';
 
-const initialStore: IStore = {
+const rootReducer = combineReducers({
+  burgerConstructor: constructorReducer,
+  ingredients: ingredientsReducer,
+  previewIngredient: previewIngredientReducer,
+  order: orderReducer,
+});
+
+export type RootState = ReturnType<typeof rootReducer>;
+export type AppDispatch = typeof store.dispatch;
+
+const initialStore: Partial<RootState> = {
   ingredients: {
     items: [],
     isLoading: true,
     error: null,
   },
-  constructor: {
+  burgerConstructor: {
     bun: null,
     ingredients: [],
   },
@@ -20,24 +30,14 @@ const initialStore: IStore = {
     item: null,
   },
   order: {
-    orderId: '',
+    orderId: null,
     ingredients: [],
     isLoading: false,
     error: null,
   },
 };
 
-const rootReducer = combineReducers({
-  constructor: constructorReducer,
-  ingredients: ingredientsReducer,
-  previewIngredient: previewIngredientReducer,
-  order: orderReducer,
-});
-
-export type RootState = ReturnType<typeof rootReducer>;
-
 export const store = configureStore({
   reducer: rootReducer,
-  preloadedState: initialStore,
-  devTools: process.env.NODE_ENV !== 'production',
+  preloadedState: initialStore as any,
 });

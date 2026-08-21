@@ -1,5 +1,3 @@
-// services/api/ingredients.js (или где у вас лежат эти функции)
-
 import { request } from "../utils/api";
 import { sleep } from '../services/order/actions';
 
@@ -10,7 +8,7 @@ export async function getIngredients() {
 
 export async function createOrderRequest(ingredients: string[]) {
   // Передаем метод, заголовки и тело запроса
-  await sleep(6000);
+  await sleep(4000);
 
   const data = await request('/orders', {
     method: 'POST',
@@ -22,5 +20,5 @@ export async function createOrderRequest(ingredients: string[]) {
 
   console.log(data);
   // Возвращаем только то, что нужно компоненту/редюсеру
-  return data.order.number;
+  return data;
 }

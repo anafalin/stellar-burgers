@@ -1,6 +1,8 @@
 import { IStore } from '../../utils/types';
 
-export const ingredientsOrder = (store: IStore) => store.order.ingredients;
-export const orderIndex = (store: IStore) => store.order.orderId;
-export const orderLoading = (store: IStore) => store.order.isLoading;
-export const orderError = (store: IStore) => store.order.error;
+export const order = (state: IStore) => state.order;
+export const selectOrderIndex = (state: IStore): number | null => state.order.orderId;
+
+export const selectOrderLoading = (state: IStore): boolean => state.order.isLoading;
+
+export const selectOrderError = (state: IStore): string | null => state.order.error;

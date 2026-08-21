@@ -4,22 +4,26 @@ import {
   REQUEST_CREATE_ORDER_PENDING,
   REQUEST_CREATE_ORDER_SUCCESS,
   RESET_ORDER,
+  TOrderActions, // Импортируем наш union-тип
 } from './actions';
 import { IOrderState } from '../../utils/types';
 
 const initialState: IOrderState = {
-  orderId: '',
+  orderId: null,
   ingredients: [],
   isLoading: false,
   error: null,
 };
 
-export const orderReducer = (state: IOrderState = initialState, action: any) => {
+export const orderReducer = (
+  state: IOrderState = initialState,
+  action: TOrderActions,
+): IOrderState => {
   switch (action.type) {
     case CREATE_ORDER: {
       return {
         ...state,
-        ingredients: [...action.payload.ingredients],
+        ingredients: [...action.ingredients],
       };
     }
 
@@ -32,10 +36,11 @@ export const orderReducer = (state: IOrderState = initialState, action: any) => 
     }
 
     case REQUEST_CREATE_ORDER_SUCCESS: {
+      console.log(action);
       return {
         ...state,
         isLoading: false,
-        orderId: action.payload,
+        orderId: action.response.order.number,
       };
     }
 
@@ -43,12 +48,14 @@ export const orderReducer = (state: IOrderState = initialState, action: any) => 
       return {
         ...state,
         isLoading: false,
-        error: action.payload,
+        error: action.message,
       };
     }
 
     case RESET_ORDER: {
-      return initialState;
+      return {
+        ...initialState,
+      };
     }
 
     default: {

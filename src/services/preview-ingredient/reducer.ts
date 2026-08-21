@@ -1,4 +1,8 @@
-import { RESET_PREVIEW_INGREDIENT, SET_PREVIEW_INGREDIENT } from './actions';
+import {
+  RESET_PREVIEW_INGREDIENT,
+  SET_PREVIEW_INGREDIENT,
+  TPreviewIngredientActions,
+} from './actions';
 import { IPreviewIngredientState } from '../../utils/types';
 
 const initialState: IPreviewIngredientState = {
@@ -7,13 +11,13 @@ const initialState: IPreviewIngredientState = {
 
 export const previewIngredientReducer = (
   state: IPreviewIngredientState = initialState,
-  action: any,
-) => {
+  action: TPreviewIngredientActions,
+): IPreviewIngredientState => {
   switch (action.type) {
     case SET_PREVIEW_INGREDIENT:
       return {
         ...state,
-        item: action.payload,
+        item: action.item,
       };
 
     case RESET_PREVIEW_INGREDIENT: {

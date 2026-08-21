@@ -1,16 +1,19 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { IStore } from '../../utils/types';
+import { IIngredient, IStore } from '../../utils/types';
 
-const selectIngredientsItems = (store:IStore) => store.ingredients?.items || [];
+const selectIngredientsItems = (store: IStore): IIngredient[] => store.ingredients?.items || [];
 
-export const sauceIngredients = createSelector([selectIngredientsItems], (items) =>
-  items.filter((item) => item.type === 'sauce'),
+export const selectSauceIngredients = createSelector(
+  [selectIngredientsItems],
+  (items: IIngredient[]) => items.filter((item) => item.type === 'sauce'),
 );
 
-export const mainIngredients = createSelector([selectIngredientsItems], (items) =>
-  items.filter((item) => item.type === 'main'),
+export const selectMainIngredients = createSelector(
+  [selectIngredientsItems],
+  (items: IIngredient[]) => items.filter((item) => item.type === 'main'),
 );
 
-export const bunIngredients = createSelector([selectIngredientsItems], (items) =>
-  items.filter((item) => item.type === 'bun'),
+export const selectBunIngredients = createSelector(
+  [selectIngredientsItems],
+  (items: IIngredient[]) => items.filter((item) => item.type === 'bun'),
 );

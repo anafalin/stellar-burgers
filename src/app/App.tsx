@@ -20,14 +20,12 @@ import {
 import Layout from '../components/layout/layout';
 import IngredientModal from '../components/ingredient-modal/IngredientModal';
 import { fetchIngredients } from '../services/ingredients/actions';
+import { AppDispatch } from '../services';
 
 // 1. Описываем интерфейс стейта локации, где может лежать background локация
 interface ILocationState {
   background?: Location;
 }
-
-// Заглушка для useDispatch (если у вас настроен AppDispatch, замените тип)
-type AppDispatch = any;
 
 function AppContent(): React.JSX.Element {
   const dispatch = useDispatch<AppDispatch>();

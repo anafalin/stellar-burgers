@@ -30,15 +30,15 @@ export interface IPreviewIngredientState {
 }
 
 export interface IOrderState {
-  orderId: string;
-  ingredients: IIngredient[];
+  orderId: number | null;
+  ingredients: string[];
   isLoading: boolean;
   error: string | null;
 }
 
 export interface IStore {
   ingredients: IIngredientsState;
-  constructor: IConstructorState;
+  burgerConstructor: IConstructorState;
   previewIngredient: IPreviewIngredientState;
   order: IOrderState;
 }

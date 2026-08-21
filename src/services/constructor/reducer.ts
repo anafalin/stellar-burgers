@@ -1,4 +1,11 @@
-import { ADD_BUN, ADD_INGREDIENT, DELETE_INGREDIENT, MOVE_INGREDIENT, RESET_CONSTRUCTOR_ITEMS } from './actions';
+import {
+  ADD_BUN,
+  ADD_INGREDIENT,
+  DELETE_INGREDIENT,
+  MOVE_INGREDIENT,
+  RESET_CONSTRUCTOR_ITEMS,
+  TConstructorActions,
+} from './actions';
 import { IConstructorState } from '../../utils/types';
 
 const initialState: IConstructorState = {
@@ -6,35 +13,39 @@ const initialState: IConstructorState = {
   ingredients: [],
 };
 
-export function constructorReducer(state: IConstructorState = initialState, action: any) {
+export function constructorReducer(
+  state: IConstructorState = initialState,
+  action: TConstructorActions,
+): IConstructorState {
   switch (action.type) {
     case ADD_BUN:
       return {
         ...state,
-        bun: action.payload,
+        bun: action.ingredient,
       };
 
     case ADD_INGREDIENT:
       return {
         ...state,
-        ingredients: [...state.ingredients, { ...action.payload }],
+        ingredients: [...state.ingredients, { ...action.ingredient }],
       };
 
     case MOVE_INGREDIENT: {
-      const ingredients = [...state.ingredients];
-      ingredients.splice(action.payload.toIndex, 0, ingredients.splice(action.payload.fromIndex, 1)[0]);
+      const updatedIngredients = [...state.ingredients];
+      const [movedItem] = updatedIngredients.splice(action.fromIndex, 1);
+      if (movedItem) {
+        updatedIngredients.splice(action.toIndex, 0, movedItem);
+      }
       return {
         ...state,
-        ingredients: ingredients,
+        ingredients: updatedIngredients,
       };
     }
 
     case DELETE_INGREDIENT: {
-      const ingredients = [...state.ingredients];
-      ingredients.filter(item => item.uniqueId !== action.payload)
       return {
         ...state,
-        ingredients: ingredients,
+        ingredients: state.ingredients.filter((item) => item.uniqueId !== action.index),
       };
     }
 

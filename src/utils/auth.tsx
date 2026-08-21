@@ -1,6 +1,6 @@
 import React, { createContext, useContext, ReactNode } from 'react';
 import { useState, useEffect } from 'react';
-import { deleteCookie, getCookie, setCookie } from '../utils/cookie';
+import { deleteCookie, getCookie, setCookie } from './cookie';
 import { request, requestWithToken } from '../utils/api';
 
 // ================================================================
