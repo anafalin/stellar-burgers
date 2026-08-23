@@ -1,0 +1,69 @@
+.result {
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+    width: 600px;
+}
+
+.statuses {
+    display: flex;
+    gap: 36px;
+}
+
+.doneStatus {
+    color: #00CCCC;
+}
+
+.statusWrapper {
+    width: 50%
+}
+
+.title {
+    composes: text text_type_main-medium from global;
+    margin-bottom: 24px;
+}
+
+.doneStatus > li,
+.pendingStatus > li {
+    margin-bottom: 8px;
+}
+
+.doneStatus > li:last-child,
+.pendingStatus > li:last-child {
+    margin-bottom: 0;
+}
+
+.pendingStatus {
+    color: white;
+}
+
+.doneStatus,
+.pendingStatus {
+    display: grid;
+    grid-template-rows: repeat(5, auto);
+    grid-template-columns: repeat(3, max-content);
+    grid-auto-flow: column; /* 👈 элементы заполняют столбцы сверху вниз */
+    gap: 0px 25px;
+    min-height: 152px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow: hidden;
+    max-height: 200px; /* 👈 добавляем ограничение высоты */
+    overflow-y: auto; /* 👈 скролл если элементов много */
+    composes: text text_type_digits-medium from global;
+    font-size: 25px;
+}
+
+.totalTitle {
+    composes: text text_type_main-medium from global;
+}
+
+.totalNumber {
+    composes: text text_type_digits-large from global;
+}
+
+
+
+
+

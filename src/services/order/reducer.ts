@@ -1,10 +1,8 @@
 import {
-  CREATE_ORDER,
   REQUEST_CREATE_ORDER_ERROR,
   REQUEST_CREATE_ORDER_PENDING,
   REQUEST_CREATE_ORDER_SUCCESS,
-  RESET_ORDER,
-  TOrderActions, // Импортируем наш union-тип
+  TOrderActions,
 } from './actions';
 import { IOrderState } from '../../utils/types';
 
@@ -15,18 +13,8 @@ const initialState: IOrderState = {
   error: null,
 };
 
-export const orderReducer = (
-  state: IOrderState = initialState,
-  action: TOrderActions,
-): IOrderState => {
+export const orderReducer = (state: IOrderState = initialState, action: TOrderActions): IOrderState => {
   switch (action.type) {
-    case CREATE_ORDER: {
-      return {
-        ...state,
-        ingredients: [...action.ingredients],
-      };
-    }
-
     case REQUEST_CREATE_ORDER_PENDING: {
       return {
         ...state,
@@ -40,7 +28,7 @@ export const orderReducer = (
       return {
         ...state,
         isLoading: false,
-        orderId: action.response.order.number,
+        orderId: action.payload,
       };
     }
 
@@ -49,12 +37,6 @@ export const orderReducer = (
         ...state,
         isLoading: false,
         error: action.message,
-      };
-    }
-
-    case RESET_ORDER: {
-      return {
-        ...initialState,
       };
     }
 

@@ -29,7 +29,7 @@ const AppHeader = () => {
             </NavLink>
 
             <NavLink
-              to="/ordres"
+              to="/feed"
               className={({ isActive }) => (isActive ? style.activeWrapperLink : style.wrapperLink)}
             >
               {({ isActive }) => (

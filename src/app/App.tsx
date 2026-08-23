@@ -1,30 +1,26 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter, Route, Routes, useLocation, Location } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-
 import LoginPage from '../pages/auth/LoginPage';
 import RegisterPage from '../pages/auth/RegisterPage';
 import ForgotPasswordPage from '../pages/auth/ForgotPasswordPage';
 import ResetPasswordPage from '../pages/auth/ResetPasswordPage';
-import ProfilePage from '../pages/profile/ProfilePage';
 import NotFoundPage from '../pages/not-found/NotFoundPage';
 import MainPage from '../pages/main/MainPage';
 import IngredientPage from '../pages/ingredient/IngredientPage';
-
 import { ProvideAuth } from '../utils/auth';
-import {
-  ProtectedRoute,
-  PublicRoute,
-  ResetPasswordRoute,
-} from '../components/protected-route/ProtectedRoute';
+import { ProtectedRoute, PublicRoute, ResetPasswordRoute } from '../components/protected-route/ProtectedRoute';
 import Layout from '../components/layout/layout';
 import IngredientModal from '../components/ingredient-modal/IngredientModal';
 import { fetchIngredients } from '../services/ingredients/actions';
 import { AppDispatch } from '../services';
+import FeedsPage from '../pages/feeds/FeedsPage';
+import ProfilePage from '../pages/profile/ProfilePage';
+import ProfileInfoPage from '../pages/profile/ProfileInfoPage';
+import ProfileOrdersPage from '../pages/profile/ProfileOrdersPage';
 
-// 1. Описываем интерфейс стейта локации, где может лежать background локация
 interface ILocationState {
-  background?: Location;
+  background?: ReturnType<typeof useLocation>;
 }
 
 function AppContent(): React.JSX.Element {
@@ -34,14 +30,13 @@ function AppContent(): React.JSX.Element {
     dispatch(fetchIngredients());
   }, [dispatch]);
 
-  // 2. Явно приводим тип стейта локации
   const location = useLocation();
   const state = location.state as ILocationState | null;
   const background = state?.background;
 
   return (
     <>
-      {/* Если есть фоновый маршрут, фиксируем роутер на нем */}
+      {/* Главная сетка роутов */}
       <Routes location={background || location}>
         <Route path="/" element={<Layout />}>
           {/* Публичные маршруты */}
@@ -56,7 +51,6 @@ function AppContent(): React.JSX.Element {
               </PublicRoute>
             }
           />
-
           <Route
             path="/register"
             element={
@@ -65,7 +59,6 @@ function AppContent(): React.JSX.Element {
               </PublicRoute>
             }
           />
-
           <Route
             path="/forgot-password"
             element={
@@ -74,7 +67,6 @@ function AppContent(): React.JSX.Element {
               </PublicRoute>
             }
           />
-
           <Route
             path="/reset-password"
             element={
@@ -84,6 +76,11 @@ function AppContent(): React.JSX.Element {
             }
           />
 
+          {/* Лента заказов (Обратите внимание на относительный путь дочернего роута) */}
+          <Route path="/feed" element={<FeedsPage />}>
+            {/*<Route path=":id" element={<FeedPage />} />*/}
+          </Route>
+
           {/* Защищенные маршруты (только для авторизованных) */}
           <Route
             path="/profile"
@@ -92,16 +89,20 @@ function AppContent(): React.JSX.Element {
                 <ProfilePage />
               </ProtectedRoute>
             }
-          />
+          >
+            <Route index element={<ProfileInfoPage />} />
+            <Route path="orders" element={<ProfileOrdersPage />} />
+            {/*<Route path="orders/:id" element={<OrderPage />} />*/}
+          </Route>
 
-          {/* Страница ингредиента (отдельная страница) */}
+          {/* Отдельная страница ингредиента */}
           <Route path="/ingredients/:id" element={<IngredientPage />} />
 
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
 
-      {/* Модальное окно с деталями ингредиента поверх фонового маршрута */}
+      {/* Модальные окна поверх фонового маршрута */}
       {background && (
         <Routes>
           <Route path="/ingredients/:id" element={<IngredientModal />} />

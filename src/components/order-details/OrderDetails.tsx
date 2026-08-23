@@ -1,12 +1,11 @@
 import done from '../../images/done.svg';
 import style from './style.module.css';
 import { useSelector } from 'react-redux';
-import { order, selectOrderError, selectOrderIndex, selectOrderLoading } from '../../services/order/selectors';
+import { selectOrderError, selectOrderIndex, selectOrderLoading } from '../../services/order/selectors';
 import LoadingComponent from '../loading-component/LoadingComponent';
 import ErrorComponent from '../error-component/ErrorComponent';
 
 const OrderDetails = () => {
-  const orderdata = useSelector(order);
   const orderId = useSelector(selectOrderIndex);
   const orderIsLoader = useSelector(selectOrderLoading);
   const oOrderError = useSelector(selectOrderError);

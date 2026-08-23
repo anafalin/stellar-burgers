@@ -1,46 +1,18 @@
-import style from './style.module.css';
-import {
-  EmailInput,
-  Input,
-  PasswordInput,
-} from '@ya.praktikum/react-developer-burger-ui-components';
-import ProfilePrompt from '../../components/profile-prompt/ProfilePrompt';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../utils/auth';
-import { ChangeEvent, FormEvent, useState } from 'react';
-import { IUser } from '../../utils/types';
-
-interface UpdateUserForm extends IUser {
-  password: string;
-}
-
-type InputChangeEvent = ChangeEvent<HTMLInputElement>;
+import { FormEvent } from 'react';
+import ProfilePrompt from '../../components/profile-prompt/ProfilePrompt';
+import style from './style.module.css';
 
 const ProfilePage = () => {
   const navigate = useNavigate();
-  const { user, signOut } = useAuth();
-  const [formData, setFormData] = useState<UpdateUserForm>({
-    name: user?.name || '',
-    email: user?.email || '',
-    password: '',
-  });
-
-  const [isDirty, setIsDirty] = useState<boolean>(false);
-
-  const handleChange = (e: InputChangeEvent): void => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-    setIsDirty(true);
-  };
+  const { signOut } = useAuth();
 
   const handleLogout = async (e: FormEvent<HTMLAnchorElement>): Promise<void> => {
-    e.preventDefault(); // Предотвращаем переход по ссылке
+    e.preventDefault();
     try {
       await signOut();
-      navigate('/login'); // Переадресация на страницу входа
+      navigate('/login');
     } catch (error) {
       console.error('Ошибка выхода:', error);
     }
@@ -51,10 +23,7 @@ const ProfilePage = () => {
       <div className={style.col1}>
         <ul className={style.nav}>
           <li>
-            <NavLink
-              to={'/profile'}
-              className={({ isActive }) => (isActive ? style.activeNavLink : style.navLink)}
-            >
+            <NavLink to={'/profile'} end className={({ isActive }) => (isActive ? style.activeNavLink : style.navLink)}>
               Профиль
             </NavLink>
           </li>
@@ -77,33 +46,7 @@ const ProfilePage = () => {
       </div>
 
       <div className={style.col2}>
-        <Input
-          type={'text'}
-          placeholder={'Имя'}
-          onChange={(e) => handleChange(e)}
-          value={formData.name}
-          name={'name'}
-          icon={'EditIcon'}
-          error={false}
-          errorText={'Ошибка'}
-          size={'default'}
-          extraClass="ml-1"
-          onPointerEnterCapture={undefined}
-          onPointerLeaveCapture={undefined}
-        />
-        <EmailInput
-          onChange={(e) => handleChange(e)}
-          value={formData.email}
-          name={'email'}
-          isIcon={true}
-        />
-        <PasswordInput
-          onChange={(e) => handleChange(e)}
-          value={formData.password}
-          name={'password'}
-          extraClass="mb-2"
-          icon={'EditIcon'}
-        />
+        <Outlet />
       </div>
     </div>
   );

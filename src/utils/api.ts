@@ -74,7 +74,9 @@ export async function request<T = any>(endpoint: string, options: RequestOptions
       },
     });
 
-    return await checkResponse<T>(res);
+    const result = await checkResponse<T>(res);
+    console.log(result);
+    return result;
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Неизвестная ошибка';
     throw new Error(`Ошибка при запросе ${endpoint}: ${errorMessage}`);

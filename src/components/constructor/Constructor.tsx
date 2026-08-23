@@ -6,7 +6,7 @@ import ConstructorItemList from '../constructor-item-list/ConstructorItemList';
 import OrderDetails from '../order-details/OrderDetails';
 import Modal from '../modal/Modal';
 import style from './style.module.css';
-import { createOrder, resetOrder } from '../../services/order/actions';
+import { createOrder } from '../../services/order/actions';
 import { resetConstructorItems } from '../../services/constructor/actions';
 import { useAuth } from '../../utils/auth';
 import { selectBun, selectIngredients } from '../../services/constructor/selectors';
@@ -39,7 +39,6 @@ const Constructor: React.FC = () => {
 
   const closeModalHandler = (): void => {
     dispatch(resetConstructorItems());
-    dispatch(resetOrder());
     setIsModalOpen(false);
   };
 

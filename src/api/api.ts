@@ -1,5 +1,4 @@
-import { request } from "../utils/api";
-import { sleep } from '../services/order/actions';
+import { request } from '../utils/api';
 
 export async function getIngredients() {
   // Просто вызываем request с нужным эндпоинтом
@@ -7,18 +6,11 @@ export async function getIngredients() {
 }
 
 export async function createOrderRequest(ingredients: string[]) {
-  // Передаем метод, заголовки и тело запроса
-  await sleep(4000);
-
-  const data = await request('/orders', {
+  return await request('/orders', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ ingredients }),
   });
-
-  console.log(data);
-  // Возвращаем только то, что нужно компоненту/редюсеру
-  return data;
 }

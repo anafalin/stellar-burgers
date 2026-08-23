@@ -1,25 +1,10 @@
 import { createOrderRequest } from '../../api/api';
-
-type IOrderResponse = {
-  name: string;
-  order: {
-    number: number;
-  };
-  success: boolean;
-};
+import { Dispatch } from 'redux';
 
 // Константы типов (используем as const для автоматического вывода литерального типа)
-export const CREATE_ORDER = 'CREATE_ORDER' as const;
 export const REQUEST_CREATE_ORDER_PENDING = 'REQUEST_CREATE_ORDER_PENDING' as const;
 export const REQUEST_CREATE_ORDER_SUCCESS = 'REQUEST_CREATE_ORDER_SUCCESS' as const;
 export const REQUEST_CREATE_ORDER_ERROR = 'REQUEST_CREATE_ORDER_ERROR' as const;
-export const RESET_ORDER = 'RESET_ORDER' as const;
-
-// Интерфейсы экшенов с правильными полями
-export interface ICreateOrderAction {
-  readonly type: typeof CREATE_ORDER;
-  readonly ingredients: ReadonlyArray<string>;
-}
 
 export interface IRequestCreateOrderPendingAction {
   readonly type: typeof REQUEST_CREATE_ORDER_PENDING;
@@ -27,7 +12,7 @@ export interface IRequestCreateOrderPendingAction {
 
 export interface IRequestCreateOrderSuccessAction {
   readonly type: typeof REQUEST_CREATE_ORDER_SUCCESS;
-  readonly response: IOrderResponse;
+  readonly payload: string;
 }
 
 export interface IRequestCreateOrderErrorAction {
@@ -35,25 +20,17 @@ export interface IRequestCreateOrderErrorAction {
   readonly message: string;
 }
 
-export interface IResetOrderAction {
-  readonly type: typeof RESET_ORDER;
-}
-
 export type TOrderActions =
-  | ICreateOrderAction
-  | IRequestCreateOrderPendingAction
-  | IRequestCreateOrderSuccessAction
-  | IRequestCreateOrderErrorAction
-  | IResetOrderAction;
+  IRequestCreateOrderPendingAction | IRequestCreateOrderSuccessAction | IRequestCreateOrderErrorAction;
 
 // Синхронные генераторы экшенов (Action Creators) для порядка
 export const createOrderPending = (): IRequestCreateOrderPendingAction => ({
   type: REQUEST_CREATE_ORDER_PENDING,
 });
 
-export const createOrderSuccess = (response: IOrderResponse): IRequestCreateOrderSuccessAction => ({
+export const createOrderSuccess = (payload: string): IRequestCreateOrderSuccessAction => ({
   type: REQUEST_CREATE_ORDER_SUCCESS,
-  response,
+  payload: payload,
 });
 
 export const createOrderError = (error: string): IRequestCreateOrderErrorAction => ({
@@ -61,24 +38,15 @@ export const createOrderError = (error: string): IRequestCreateOrderErrorAction 
   message: error,
 });
 
-export const resetOrder = (): IResetOrderAction => ({
-  type: RESET_ORDER,
-});
-
-// Асинхронный thunk-экшен с чистой типизацией dispatch
-export const createOrder = (ingredients: string[]) => {
-  return async (dispatch: (action: TOrderActions) => void) => {
+export function createOrder(ingredients: string[]) {
+  return async (dispatch: Dispatch<TOrderActions>) => {
     dispatch(createOrderPending());
 
     try {
-      const res = await createOrderRequest(ingredients);
-      dispatch(createOrderSuccess(res));
+      const response = await createOrderRequest(ingredients);
+      dispatch(createOrderSuccess(response));
     } catch (error: any) {
       dispatch(createOrderError(error.message || 'Что-то пошло не так'));
     }
   };
-};
-
-export const sleep = (ms: number): Promise<void> => {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-};
+}

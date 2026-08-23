@@ -50,6 +50,7 @@
     ]
   },
   "devDependencies": {
+    "eslint-plugin-unused-imports": "^4.4.1",
     "prettier": "3.9.6"
   },
   "overrides": {

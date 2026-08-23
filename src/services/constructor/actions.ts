@@ -1,10 +1,4 @@
 import { IIngredient } from '../../utils/types';
-import {
-  IResetPreviewIngredientAction,
-  ISetPreviewIngredientAction,
-  RESET_PREVIEW_INGREDIENT,
-  SET_PREVIEW_INGREDIENT,
-} from '../preview-ingredient/actions';
 
 export const ADD_BUN: 'ADD_BUN' = 'ADD_BUN';
 export const ADD_INGREDIENT: 'ADD_INGREDIENT' = 'ADD_INGREDIENT';
@@ -38,11 +32,7 @@ export interface IResetConstructorItemsAction {
 }
 
 export type TConstructorActions =
-  | IAddBunAction
-  | IAddIngredientAction
-  | IDeleteIngredientAction
-  | IMoveIngredientAction
-  | IResetConstructorItemsAction;
+  IAddBunAction | IAddIngredientAction | IDeleteIngredientAction | IMoveIngredientAction | IResetConstructorItemsAction;
 
 export const addBun = (ingredient: IIngredient): IAddBunAction => ({
   type: ADD_BUN,

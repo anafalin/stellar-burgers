@@ -1,7 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { IIngredient, IStore } from '../../utils/types';
 
-const selectIngredientsItems = (store: IStore): IIngredient[] => store.ingredients?.items || [];
+export const selectIngredientsItems = (store: IStore): IIngredient[] => store.ingredients?.items || [];
 
 export const selectSauceIngredients = createSelector(
   [selectIngredientsItems],
